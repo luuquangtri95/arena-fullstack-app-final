@@ -22,33 +22,17 @@ const find = async ({ page, limit, keyword, gender, countryId }) => {
       where = {
         [Op.or]: [
           {
-            firstName: {
+            title: {
               [Op.like]: `%${keyword}%`,
             },
           },
           {
-            lastName: {
-              [Op.like]: `%${keyword}%`,
-            },
-          },
-          {
-            email: {
-              [Op.like]: `%${keyword}%`,
-            },
-          },
-          {
-            phone: {
+            description: {
               [Op.like]: `%${keyword}%`,
             },
           },
         ],
       }
-    }
-    if (gender !== undefined) {
-      where = { ...where, gender }
-    }
-    if (countryId) {
-      where = { ...where, countryId }
     }
 
     const count = await Model.count({ where })

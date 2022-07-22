@@ -2,9 +2,9 @@ import ResponseHandler from '../helpers/responseHandler.js'
 import Joi from 'joi'
 
 const schema = {
-  title: Joi.string().min(3).max(30).required(),
+  title: Joi.string().required(),
   description: Joi.string().required(),
-  handle: Joi.string().min(3).max(50).required(),
+  handle: Joi.string().required(),
   price: Joi.number().required(),
   publish: Joi.boolean(),
   status: Joi.any(),

@@ -1,10 +1,35 @@
 import CountryRepository from '../repositories/country.js'
 import CustomerRepository from '../repositories/customer.js'
+import ProductRepository from '../repositories/product.js'
 import UserRepository from '../repositories/user.js'
 
 import countries from './countries.js'
 import customers from './customers.js'
 import users from './users.js'
+import products from './products.js'
+import vendors from './vendors.js'
+
+const initProducts = async () => {
+  try {
+    console.log(`Init products`)
+
+    let entries = await ProductRepository.find({})
+    if (entries.items.length) {
+      console.log(`=> products already exist`)
+      return
+    }
+
+    for (let i = 0, leng = products.length; i < leng; i++) {
+      await ProductRepository.create({ ...products[i] })
+        .then((res) => console.log(`| create products [${i + 1}/${leng}] successful`))
+        .catch((err) =>
+          console.log(`| create products [${i + 1}/${leng}] failed with error: ${err.message}`),
+        )
+    }
+  } catch (error) {
+    console.log('initProducts error :>> ', error)
+  }
+}
 
 const initCountries = async () => {
   try {
@@ -84,6 +109,7 @@ const init = async () => {
   await initCountries()
   await initCustomers()
   await initUsers()
+  await initProducts()
 }
 
 init()
