@@ -27,11 +27,15 @@ function Table(props) {
     </Stack>,
     <Stack vertical spacing="extraTight">
       <Stack.Item>Description: {item?.description}</Stack.Item>
-      <Stack.Item>Handle: {item?.handle}</Stack.Item>
+      <Stack.Item>URL SEO: {item?.handle}</Stack.Item>
       <Stack.Item>
         Price: {item?.price.toLocaleString('vi-VI', { style: 'currency', currency: 'VND' })}
       </Stack.Item>
+      <Stack.Item>publish: {item?.publish ? 'TRUE' : 'FALSE'}</Stack.Item>
+      <Stack.Item>status: {item?.status}</Stack.Item>
+      <Stack.Item>vendor: {item?.vendor.name}</Stack.Item>
     </Stack>,
+
     <Popover
       active={item.id === selected?.id}
       activator={

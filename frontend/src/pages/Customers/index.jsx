@@ -75,6 +75,7 @@ function CustomersPage(props) {
   useEffect(() => {
     console.log('useEffect location')
     console.log(qs.parse(location.search))
+    console.log(location.search)
     getCustomers(location.search)
   }, [location])
 
