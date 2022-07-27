@@ -92,23 +92,31 @@ function ProductsPage(props) {
 
   const handleSubmit = async (formData) => {
     try {
-      delete formData.originImages
-      if (formData['thumbnail']) {
-        let images = await UploadApi.upload([formData['thumbnail']])
+      if (formData['thumbnail'].value) {
+        let images = await UploadApi.upload([formData['thumbnail'].value])
         if (!images.success) {
           actions.showNotify({ error: true, message: images.error.message })
         }
-
-        formData['thumbnail'] = images.data[0]
+        formData['thumbnail'].value = images.data[0]
       }
 
-      if (formData['images']) {
-        let images = await UploadApi.upload(formData['images'])
+      if (formData['images'].value.length) {
+        let images = await UploadApi.upload(formData['images'].value)
         if (!images.success) {
           actions.showNotify({ error: true, message: images.error.message })
         }
+        formData['images'].value = images.data
+      }
 
-        formData['images'] = images.data
+      // handle data before submit
+      let data = {}
+
+      Object.keys(formData)
+        .filter((key) => !['images'].includes(key))
+        .forEach((key) => (formData[key].value ? (data[key] = formData[key].value) : null))
+
+      if (formData['images'].value.length) {
+        data['images'] = formData['images'].value
       }
 
       let res = null
@@ -116,9 +124,8 @@ function ProductsPage(props) {
         // update
       } else {
         // create
-        res = await ProductApi.create(formData)
+        res = await ProductApi.create(data)
       }
-
       if (!res.success) {
         throw res.error
       }

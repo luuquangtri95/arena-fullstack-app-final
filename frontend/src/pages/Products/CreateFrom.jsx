@@ -107,6 +107,7 @@ const initialFormData = {
     type: 'file',
     label: 'Thumbnail',
     value: null,
+    originValue: null,
     error: '',
     validate: {},
     allowMultiple: false,
@@ -157,13 +158,36 @@ function CreateFrom({ created = {}, onDiscard = null, onSubmit = null, vendorLis
     _formData.handle.value = `iphone-12-${Date.now()}`
     _formData.price.value = 1000000
 
+    // is create
+    if (created.id) {
+      Array.from(['title', 'description', 'handle', 'price', 'status', 'vendorId']).map(
+        (key) =>
+          (_formData[key] = {
+            ..._formData[key],
+            value: String(created[key] || ''),
+          }),
+      )
+
+      Array.from(['publish']).map(
+        (key) => (_formData[key] = { ..._formData[key], value: Boolean(created[key] || '') }),
+      )
+
+      Array.from(['thumbnail']).map(
+        (key) => (_formData[key] = { ..._formData[key], originValue: String(created[key]) }),
+      )
+
+      Array.from(['images']).map(
+        (key) => (_formData[key] = { ..._formData[key], originValue: created[key] || [] }),
+      )
+    }
+
     setFormData(_formData)
   }, [])
 
   const handleChange = (name, value) => {
     let _formData = JSON.parse(JSON.stringify(formData))
 
-    ;['thumbnail', 'images'].forEach((key) => (_formData[key] = formData[key]))
+    Array.from(['thumbnail', 'images']).forEach((key) => (_formData[key] = formData[key]))
     _formData[name] = { ..._formData[name], value, error: '' }
 
     setFormData(_formData)
@@ -171,26 +195,16 @@ function CreateFrom({ created = {}, onDiscard = null, onSubmit = null, vendorLis
 
   const handleSubmit = () => {
     try {
+      console.log('before validate', formData)
       const { valid, data } = FormValidate.validateForm(formData)
+
+      console.log('log after validate', data)
 
       if (valid) {
         data['thumbnail'].value = formData['thumbnail'].value
         data['images'].value = formData['images'].value
 
-        const mapData = {
-          title: data.title.value,
-          description: data.description.value,
-          handle: data.handle.value,
-          price: +data.price.value,
-          thumbnail: data.thumbnail.value,
-          images: data.images.value,
-          status: data.status.value || 'ACTIVE',
-          publish: !!data.publish.value,
-          vendorId: data.vendorId.value,
-          originImages: data.images.originValue,
-        }
-
-        onSubmit(mapData)
+        onSubmit(data)
       } else {
         setFormData(data)
 
@@ -198,6 +212,7 @@ function CreateFrom({ created = {}, onDiscard = null, onSubmit = null, vendorLis
       }
     } catch (error) {
       console.log(error)
+      // actions.showNotify({ error: true, message: error.message })
     }
   }
 
@@ -265,18 +280,43 @@ function CreateFrom({ created = {}, onDiscard = null, onSubmit = null, vendorLis
             </Stack.Item>
           </Stack>
 
-          {/* stack fill */}
+          {/* thumbnail and images */}
           <Stack>
             <Stack.Item fill>
               <FormControl
                 {...formData['thumbnail']}
                 onChange={(value) => handleChange('thumbnail', value)}
+                // onDeleteOriginValue={(value) => {
+                //   let _formData = JSON.parse(JSON.stringify(formData))
+                //   Array.from(['thumbnail', 'images']).forEach(
+                //     (key) => (_formData[key] = formData[key]),
+                //   )
+                //   _formData['thumbnail'] = {
+                //     ..._formData['thumbnail'],
+                //     originValue: '',
+                //     error: '',
+                //   }
+
+                //   setFormData(_formData)
+                // }}
               />
             </Stack.Item>
             <Stack.Item fill>
               <FormControl
                 {...formData['images']}
                 onChange={(value) => handleChange('images', value)}
+                // onDeleteOriginValue={(value) => {
+                //   let _formData = JSON.parse(JSON.stringify(formData))
+                //   Array.from(['thumbnail', 'images']).forEach(
+                //     (key) => (_formData[key] = formData[key]),
+                //   )
+                //   _formData['images'] = {
+                //     ..._formData['images'],
+                //     originValue: _formData['images'].originValue.filter((item) => item !== value),
+                //     error: '',
+                //   }
+                //   setFormData(_formData)
+                // }}
               />
             </Stack.Item>
           </Stack>
