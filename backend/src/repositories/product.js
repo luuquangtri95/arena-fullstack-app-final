@@ -12,7 +12,7 @@ const count = async () => {
   }
 }
 
-const find = async ({ page, limit, keyword, gender, countryId }) => {
+const find = async ({ page, limit, keyword, vendorId, status, publish }) => {
   try {
     let _page = page ? (parseInt(page) >= 1 ? parseInt(page) : 1) : 1
     let _limit = limit ? (parseInt(limit) >= 1 ? parseInt(limit) : 20) : 20
@@ -33,6 +33,24 @@ const find = async ({ page, limit, keyword, gender, countryId }) => {
           },
         ],
       }
+    }
+
+    if (vendorId) {
+      where = {
+        ...where,
+        vendorId,
+      }
+    }
+
+    if (status) {
+      where = {
+        ...where,
+        status: status.toUpperCase(),
+      }
+    }
+
+    if (publish !== undefined) {
+      where = { ...where, publish }
     }
 
     const count = await Model.count({ where })
