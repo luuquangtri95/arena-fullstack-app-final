@@ -88,6 +88,7 @@ function CustomersPage(props) {
         delete params.page
       }
     }
+
     if ('limit' in filter) {
       if (filter.limit) {
         params = { ...params, limit: filter.limit }
@@ -95,6 +96,7 @@ function CustomersPage(props) {
         delete params.limit
       }
     }
+
     if ('gender' in filter) {
       if (filter.gender) {
         params = { ...params, gender: filter.gender }
@@ -102,6 +104,7 @@ function CustomersPage(props) {
         delete params.gender
       }
     }
+
     if ('countryId' in filter) {
       if (filter.countryId) {
         params = { ...params, countryId: filter.countryId }
@@ -109,11 +112,20 @@ function CustomersPage(props) {
         delete params.countryId
       }
     }
+
     if ('keyword' in filter) {
       if (filter.keyword) {
         params = { ...params, keyword: filter.keyword }
       } else {
         delete params.keyword
+      }
+    }
+
+    if ('publish' in filter) {
+      if (filter.publish) {
+        params = { ...params, publish: filter.publish }
+      } else {
+        delete params.publish
       }
     }
 

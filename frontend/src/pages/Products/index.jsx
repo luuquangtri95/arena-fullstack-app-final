@@ -11,6 +11,7 @@ import qs from 'query-string'
 import PagePreloader from '../../components/PagePreloader'
 import ConfirmDelete from '../Products/ConfirmDelete'
 import MyPagination from '../../components/MyPagination'
+import Filters from './Filters'
 
 function ProductsPage(props) {
   const { actions } = props
@@ -84,6 +85,38 @@ function ProductsPage(props) {
         params = { ...params, limit: filter.limit }
       } else {
         delete params.limit
+      }
+    }
+
+    if ('keyword' in filter) {
+      if (filter.keyword) {
+        params = { ...params, keyword: filter.keyword }
+      } else {
+        delete params.keyword
+      }
+    }
+
+    if ('vendorId' in filter) {
+      if (filter.vendorId) {
+        params = { ...params, vendorId: filter.vendorId }
+      } else {
+        delete params.vendorId
+      }
+    }
+
+    if ('status' in filter) {
+      if (filter.status) {
+        params = { ...params, status: filter.status }
+      } else {
+        delete params.status
+      }
+    }
+
+    if ('publish' in filter) {
+      if (filter.publish) {
+        params = { ...params, publish: filter.publish }
+      } else {
+        delete params.publish
       }
     }
 
@@ -208,6 +241,14 @@ function ProductsPage(props) {
         ]}
       />
       <Card>
+        <Card.Section>
+          <Filters
+            filter={qs.parse(location.search)}
+            vendorList={vendorList}
+            onChange={(filter) => handleFilter(filter)}
+          />
+        </Card.Section>
+
         <Card.Section>
           <div>
             Total items: <b>{productList?.totalItems}</b>
