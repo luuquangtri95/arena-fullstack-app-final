@@ -286,37 +286,40 @@ function CreateFrom({ created = {}, onDiscard = null, onSubmit = null, vendorLis
               <FormControl
                 {...formData['thumbnail']}
                 onChange={(value) => handleChange('thumbnail', value)}
-                // onDeleteOriginValue={(value) => {
-                //   let _formData = JSON.parse(JSON.stringify(formData))
-                //   Array.from(['thumbnail', 'images']).forEach(
-                //     (key) => (_formData[key] = formData[key]),
-                //   )
-                //   _formData['thumbnail'] = {
-                //     ..._formData['thumbnail'],
-                //     originValue: '',
-                //     error: '',
-                //   }
+                onDeleteOriginValue={(value) => {
+                  let _formData = JSON.parse(JSON.stringify(formData))
+                  Array.from(['thumbnail', 'images']).forEach(
+                    (key) => (_formData[key] = formData[key]),
+                  )
 
-                //   setFormData(_formData)
-                // }}
+                  _formData['thumbnail'] = {
+                    ..._formData['thumbnail'],
+                    originValue: '',
+                    error: '',
+                  }
+
+                  setFormData(_formData)
+                }}
               />
             </Stack.Item>
             <Stack.Item fill>
               <FormControl
                 {...formData['images']}
                 onChange={(value) => handleChange('images', value)}
-                // onDeleteOriginValue={(value) => {
-                //   let _formData = JSON.parse(JSON.stringify(formData))
-                //   Array.from(['thumbnail', 'images']).forEach(
-                //     (key) => (_formData[key] = formData[key]),
-                //   )
-                //   _formData['images'] = {
-                //     ..._formData['images'],
-                //     originValue: _formData['images'].originValue.filter((item) => item !== value),
-                //     error: '',
-                //   }
-                //   setFormData(_formData)
-                // }}
+                onDeleteOriginValue={(value) => {
+                  let _formData = JSON.parse(JSON.stringify(formData))
+                  Array.from(['thumbnail', 'images']).forEach(
+                    (key) => (_formData[key] = formData[key]),
+                  )
+
+                  _formData['images'] = {
+                    ..._formData['images'],
+                    originValue: _formData['images'].originValue.filter((item) => item !== value),
+                    error: '',
+                  }
+
+                  setFormData(_formData)
+                }}
               />
             </Stack.Item>
           </Stack>

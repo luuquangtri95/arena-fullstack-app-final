@@ -92,12 +92,18 @@ function ProductsPage(props) {
 
   const handleSubmit = async (formData) => {
     try {
+      actions.showAppLoading()
+
+      // handle upload images
       if (formData['thumbnail'].value) {
         let images = await UploadApi.upload([formData['thumbnail'].value])
         if (!images.success) {
           actions.showNotify({ error: true, message: images.error.message })
         }
+
         formData['thumbnail'].value = images.data[0]
+      } else if (formData['thumbnail'].originValue) {
+        formData['thumbnail'].value = formData['thumbnail'].originValue
       }
 
       if (formData['images'].value.length) {
@@ -105,7 +111,10 @@ function ProductsPage(props) {
         if (!images.success) {
           actions.showNotify({ error: true, message: images.error.message })
         }
-        formData['images'].value = images.data
+
+        formData['images'].value = [...images.data, ...formData['images'].originValue]
+      } else if (formData['images'].originValue.length) {
+        formData['images'].value = formData['images'].originValue
       }
 
       // handle data before submit
@@ -117,11 +126,19 @@ function ProductsPage(props) {
 
       if (formData['images'].value.length) {
         data['images'] = formData['images'].value
+      } else {
+        data['images'] = []
+      }
+
+      if (!formData['thumbnail'].value) {
+        data['thumbnail'] = ''
       }
 
       let res = null
       if (created?.id) {
         // update
+
+        res = await ProductApi.update(created.id, data)
       } else {
         // create
         res = await ProductApi.create(data)
