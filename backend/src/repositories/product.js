@@ -12,10 +12,12 @@ const count = async () => {
   }
 }
 
-const find = async ({ page, limit, keyword, vendorId, status, publish }) => {
+const find = async ({ page, limit, keyword, vendorId, status, publish, price }) => {
   try {
     let _page = page ? (parseInt(page) >= 1 ? parseInt(page) : 1) : 1
     let _limit = limit ? (parseInt(limit) >= 1 ? parseInt(limit) : 20) : 20
+
+    console.log(price)
 
     let where = {}
     if (keyword) {
@@ -51,6 +53,16 @@ const find = async ({ page, limit, keyword, vendorId, status, publish }) => {
 
     if (publish !== undefined) {
       where = { ...where, publish }
+    }
+
+    if (price) {
+      where = {
+        ...where,
+        price: {
+          [Op.gte]: price[0],
+          [Op.lte]: price[1],
+        },
+      }
     }
 
     const count = await Model.count({ where })
