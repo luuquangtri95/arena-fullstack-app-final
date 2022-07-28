@@ -1,6 +1,8 @@
 import { ActionList, Button, ButtonGroup, Popover, Stack, Tag, TextField } from '@shopify/polaris'
+import { CaretDownMinor } from '@shopify/polaris-icons'
 import React, { useState } from 'react'
 import FilterByPriceRange from './filters/FilterByPriceRange'
+import './styles.scss'
 
 function Filters(props) {
   const { filter = {}, onChange = null, vendorList = [] } = props
@@ -59,6 +61,11 @@ function Filters(props) {
     }, 600)
   }
 
+  const handlePriceRangeChange = (value) => {
+    onChange({ ...filter, price: value })
+    setPriceActive(false)
+  }
+
   return (
     <Stack vertical alignment="fill">
       <Stack>
@@ -110,20 +117,23 @@ function Filters(props) {
               <ActionList actionRole="menuitem" items={publishActionList} />
             </Popover>
 
-            <Popover
-              active={priceActive}
-              activator={
-                <Button disclosure onClick={() => setPriceActive(!priceActive)}>
-                  Price Range
-                </Button>
-              }
-              onClose={() => setPriceActive(false)}
-            >
-              <ActionList actionRole="menuitem" items={[{ content: <FilterByPriceRange /> }]} />
-            </Popover>
+            <div>
+              <Button id="button-price-range" onClick={() => setPriceActive(!priceActive)}>
+                Price Range
+                <div className="icon-arrow-down">
+                  <CaretDownMinor />
+                </div>
+              </Button>
+            </div>
           </ButtonGroup>
         </Stack.Item>
       </Stack>
+
+      {priceActive && (
+        <div style={{ width: 400 }}>
+          <FilterByPriceRange onChange={handlePriceRangeChange} />
+        </div>
+      )}
 
       <Stack>
         {Boolean(filter.vendorId) && (
@@ -141,6 +151,12 @@ function Filters(props) {
         {Boolean(filter.publish) && (
           <Tag onRemove={() => onChange({ ...filter, publish: '' })}>
             Publish: {publishActionList.find((item) => item.value === filter.publish)?.content}
+          </Tag>
+        )}
+
+        {Boolean(filter.price) && (
+          <Tag onRemove={() => onChange({ ...filter, price: '' })}>
+            price: from {filter.price[0] + 'đ'} to {filter.price[1] + 'đ'}
           </Tag>
         )}
       </Stack>

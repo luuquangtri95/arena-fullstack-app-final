@@ -120,6 +120,14 @@ function ProductsPage(props) {
       }
     }
 
+    if ('price' in filter) {
+      if (filter.price) {
+        params = { ...params, price: filter.price }
+      } else {
+        delete params.price
+      }
+    }
+
     setSearchParams(params)
   }
 

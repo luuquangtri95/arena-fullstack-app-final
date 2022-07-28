@@ -5,6 +5,7 @@ const count = async () => {
 }
 
 const find = async (query) => {
+  console.log(query)
   return await apiCaller(`/api/products${query}`)
 }
 
