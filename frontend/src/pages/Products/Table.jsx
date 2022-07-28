@@ -34,7 +34,7 @@ function Table(props) {
       </Stack.Item>
       <Stack.Item>Publish: {item?.publish ? 'TRUE' : 'FALSE'}</Stack.Item>
       <Stack.Item>Status: {item?.status}</Stack.Item>
-      <Stack.Item>Vendor: {item?.vendor.name}</Stack.Item>
+      <Stack.Item>Vendor: {item?.vendor?.name}</Stack.Item>
     </Stack>,
 
     <Popover
