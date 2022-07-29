@@ -1,11 +1,11 @@
 import apiCaller from '../helpers/apiCaller.js'
 
-const find = async () => {
-  return await apiCaller('/api/vendors')
+const find = async (query) => {
+  return await apiCaller(`/api/vendors${query}`)
 }
 
-const vendorApi = {
+const VendorApi = {
   find,
 }
 
-export default vendorApi
+export default VendorApi

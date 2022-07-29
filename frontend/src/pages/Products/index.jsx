@@ -48,12 +48,12 @@ function ProductsPage(props) {
   useEffect(() => {
     ;(async () => {
       try {
-        const res = await vendorApi.find()
+        const res = await vendorApi.find('')
         if (!res.success) {
           throw res.error
         }
 
-        setVendorList(res.data)
+        setVendorList(res.data.items)
       } catch (error) {
         console.log(error)
         actions.showNotify({ error: true, message: error.message })

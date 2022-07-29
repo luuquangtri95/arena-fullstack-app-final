@@ -6,6 +6,7 @@ import ProductsPage from './pages/Products'
 import { Page } from '@shopify/polaris'
 import CustomersPage from './pages/Customers'
 import CountriesPage from './pages/Countries'
+import VendorPage from './pages/Vendors'
 import { HomeMinor, CustomersMinor, ProductsMinor, LocationsMinor } from '@shopify/polaris-icons'
 
 export const routes = [
@@ -42,6 +43,13 @@ export const routes = [
     title: 'Products',
     exact: false,
     component: ProductsPage,
+    icon: ProductsMinor,
+  },
+  {
+    path: '/vendors',
+    title: 'vendors',
+    exact: false,
+    component: VendorPage,
     icon: ProductsMinor,
   },
 ]
