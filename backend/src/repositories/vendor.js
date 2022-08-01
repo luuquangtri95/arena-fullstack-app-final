@@ -1,11 +1,19 @@
 import Model from '../models/vendor.js'
+import { Op } from 'sequelize'
 
-const find = async ({ page, limit }) => {
+const find = async ({ page, limit, keyword }) => {
   try {
     let _page = page ? (parseInt(page) >= 1 ? parseInt(page) : 1) : 1
     let _limit = limit ? (parseInt(limit) >= 1 ? parseInt(limit) : 5) : 20
 
-    const where = {}
+    let where = {}
+
+    if (keyword) {
+      where = {
+        ...where,
+        [Op.or]: [{ name: { [Op.like]: `%${keyword}%` } }, { name: { [Op.like]: `${keyword}` } }],
+      }
+    }
 
     const count = await Model.count({ where })
     const items = await Model.findAll({
