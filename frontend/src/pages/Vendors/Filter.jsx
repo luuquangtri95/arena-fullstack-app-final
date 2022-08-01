@@ -1,10 +1,11 @@
 import { Stack, Tag } from '@shopify/polaris'
-import React, { useState } from 'react'
+import React from 'react'
 import Search from './Search'
 
 function Filter({ items = [], onChange = null, filter = {} }) {
-  const handleSearchChange = (searchValue) => {
-    onChange({ ...filter, keyword: searchValue })
+  const handleSearchChange = (vendorIdList) => {
+    const newValue = vendorIdList.join(',')
+    onChange({ ...filter, vendorId: newValue })
   }
   return (
     <Stack vertical>
@@ -14,8 +15,10 @@ function Filter({ items = [], onChange = null, filter = {} }) {
       </Stack.Item>
 
       <Stack.Item>
-        {Boolean(filter.keyword) && (
-          <Tag onRemove={() => onChange({ ...filter, keyword: '' })}>Vendor: {filter.keyword}</Tag>
+        {Boolean(filter.vendorId) && (
+          <Tag onRemove={() => onChange({ ...filter, vendorId: '' })}>
+            Vendor: {filter.vendorId}
+          </Tag>
         )}
       </Stack.Item>
 

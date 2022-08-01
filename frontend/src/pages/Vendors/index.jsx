@@ -69,11 +69,12 @@ function VendorsPage(props) {
       }
     }
 
-    if ('keyword' in filter) {
-      if (filter.keyword) {
-        params = { ...params, keyword: filter.keyword }
+    if ('vendorId' in filter) {
+      if (filter.vendorId) {
+        // console.log('vendorId', filter.vendorId)
+        params = { ...params, vendorId: filter.vendorId }
       } else {
-        delete params.keyword
+        delete params.vendorId
       }
     }
 

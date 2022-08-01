@@ -1,43 +1,45 @@
 import { Stack, Tag, Autocomplete } from '@shopify/polaris'
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 
-export default function SearchMultipleField({ items }) {
+export default function SearchMultipleField({ items, onChange }) {
   const deselectedOptions = items.map((item) => ({
     value: item.name,
     label: item.name,
   }))
-  const [selectedOptions, setSelectedOptions] = useState(['rustic'])
+
+  const [selectedOptions, setSelectedOptions] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [options, setOptions] = useState(deselectedOptions)
 
-  const updateText = useCallback(
-    (value) => {
-      setInputValue(value)
+  const updateText = (value) => {
+    setInputValue(value)
 
-      if (value === '') {
-        setOptions(deselectedOptions)
-        return
-      }
+    if (value === '') {
+      setOptions(deselectedOptions)
+      return
+    }
 
-      const filterRegex = new RegExp(value, 'i')
-      const resultOptions = deselectedOptions.filter((option) => option.label.match(filterRegex))
-      let endIndex = resultOptions.length - 1
-      if (resultOptions.length === 0) {
-        endIndex = 0
-      }
-      setOptions(resultOptions)
-    },
-    [deselectedOptions],
-  )
+    const filterRegex = new RegExp(value, 'i')
+    const resultOptions = deselectedOptions.filter((option) => option.label.match(filterRegex))
+    let endIndex = resultOptions.length - 1
+    if (resultOptions.length === 0) {
+      endIndex = 0
+    }
 
-  const removeTag = useCallback(
-    (tag) => () => {
-      const options = [...selectedOptions]
-      options.splice(options.indexOf(tag), 1)
-      setSelectedOptions(options)
-    },
-    [selectedOptions],
-  )
+    setOptions(resultOptions)
+  }
+
+  const removeTag = (tag) => () => {
+    const options = [...selectedOptions]
+    options.splice(options.indexOf(tag), 1)
+    setSelectedOptions(options)
+
+    if (selectedOptions.length === 0) {
+      onChange?.('')
+    } else {
+      onChange?.(selectedOptions)
+    }
+  }
 
   const verticalContentMarkup =
     selectedOptions.length > 0 ? (
@@ -54,6 +56,10 @@ export default function SearchMultipleField({ items }) {
         })}
       </Stack>
     ) : null
+
+  useEffect(() => {
+    onChange?.(selectedOptions)
+  }, [selectedOptions])
 
   const textField = (
     <Autocomplete.TextField
