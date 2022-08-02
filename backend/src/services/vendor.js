@@ -3,7 +3,6 @@ import Repository from '../repositories/vendor.js'
 export default {
   async find(req) {
     try {
-      console.log(req)
       return await Repository.find(req.query)
     } catch (error) {
       throw error
