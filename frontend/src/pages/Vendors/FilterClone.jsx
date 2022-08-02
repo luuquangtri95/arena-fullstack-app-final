@@ -1,36 +1,37 @@
 import { Stack, Tag } from '@shopify/polaris'
 import React from 'react'
-import { useEffect } from 'react'
 import { useState } from 'react'
 import Search from './Search'
+import SearchClone from './SearchClone'
 
-function Filter({ items = [], onChange = null, filter = {} }) {
+function FilterClone({ items = [], onChange = null, filter = {} }) {
   const [vendorIds, setVendorIds] = useState([])
+
+  console.log('vendorIds :>> ', vendorIds)
 
   const handleRemoveTag = (idx) => {
     let _vendorIds = JSON.parse(JSON.stringify(vendorIds))
 
     _vendorIds.splice(idx, 1)
 
+    const newValue = _vendorIds.join(',')
+
+    onChange({ ...filter, vendorId: newValue })
     setVendorIds(_vendorIds)
   }
-
-  useEffect(() => {
-    const newValue = vendorIds.join(',')
-    onChange({ ...filter, vendorId: newValue })
-  }, [vendorIds])
 
   return (
     <Stack vertical>
       <Stack.Item fill>
         {/* search */}
-        <Search
+        <SearchClone
           options={items.map((item) => ({
-            value: '' + item.id,
+            value: String(item.id),
             label: item.name,
+            name: item.name,
           }))}
-          value={vendorIds}
           onChange={(value) => setVendorIds(value)}
+          value={vendorIds}
         />
       </Stack.Item>
 
@@ -51,4 +52,4 @@ function Filter({ items = [], onChange = null, filter = {} }) {
   )
 }
 
-export default Filter
+export default FilterClone

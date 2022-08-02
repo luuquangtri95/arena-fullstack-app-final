@@ -19,7 +19,6 @@ function Filter(props) {
 
   const [genderActive, setGenderActive] = useState(false)
   const [countryActive, setCountryActive] = useState(false)
-
   const [search, setSearch] = useState(filter.keyword || '')
 
   const gendersActionList = [

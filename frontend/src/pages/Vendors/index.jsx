@@ -13,6 +13,7 @@ import PagePreloader from '../../components/PagePreloader'
 import CreateForm from './CreateForm'
 import ConfirmDelete from './ConfirmDelete'
 import Filter from './Filter'
+import FilterClone from './FilterClone'
 
 function VendorsPage(props) {
   const { actions } = props
@@ -71,7 +72,6 @@ function VendorsPage(props) {
 
     if ('vendorId' in filter) {
       if (filter.vendorId) {
-        // console.log('vendorId', filter.vendorId)
         params = { ...params, vendorId: filter.vendorId }
       } else {
         delete params.vendorId
