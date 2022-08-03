@@ -2,19 +2,19 @@ import Model from '../models/vendor.js'
 import { Op } from 'sequelize'
 import qs from 'query-string'
 
-const find = async ({ page, limit, vendorId }) => {
+const find = async ({ page, limit, keyword }) => {
   try {
     let _page = page ? (parseInt(page) >= 1 ? parseInt(page) : 1) : 1
     let _limit = limit ? (parseInt(limit) >= 1 ? parseInt(limit) : 5) : 20
 
     let where = {}
 
-    if (vendorId) {
-      let generateVendorId = vendorId.split(',')
-
+    if (keyword) {
       where = {
         ...where,
-        id: generateVendorId,
+        name: {
+          [Op.like]: `%${keyword}%`,
+        },
       }
     }
 
