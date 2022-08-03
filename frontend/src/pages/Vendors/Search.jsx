@@ -2,7 +2,7 @@ import { Autocomplete, Icon } from '@shopify/polaris'
 import { SearchMinor } from '@shopify/polaris-icons'
 import { useState } from 'react'
 
-export default function Search({ options = [], value = [], onChange = () => {} }) {
+export default function Search({ options = [], value = [], onChange = () => {}, onSearchChange }) {
   const [inputValue, setInputValue] = useState('')
   const [selectedOptions, setSelectedOptions] = useState(options)
 
@@ -11,10 +11,13 @@ export default function Search({ options = [], value = [], onChange = () => {} }
 
     const resultOptions = options.filter((option) => option.label.includes(inputValue))
     setSelectedOptions(resultOptions)
+
+    onSearchChange(inputValue)
   }
 
   const updateSelection = (selected) => {
     onChange([...value, ...selected])
+    setInputValue('')
   }
 
   const textField = (
@@ -23,7 +26,7 @@ export default function Search({ options = [], value = [], onChange = () => {} }
       label="Search Vendor"
       value={inputValue}
       prefix={<Icon source={SearchMinor} color="base" />}
-      placeholder="Search"
+      placeholder="Search Vendor..."
       clearButton
       onClearButtonClick={() => setInputValue('')}
     />

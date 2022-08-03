@@ -1,49 +1,32 @@
-import { Stack, Tag } from '@shopify/polaris'
-import React from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import Search from './Search'
+import { Stack, TextField } from '@shopify/polaris'
+import React, { useState } from 'react'
 
-function Filter({ items = [], onChange = null, filter = {} }) {
-  const [vendorIds, setVendorIds] = useState([])
+function Filter({ onChange = null, filter = {} }) {
+  const [keyword, setKeyword] = useState('')
 
-  const handleRemoveTag = (idx) => {
-    let _vendorIds = JSON.parse(JSON.stringify(vendorIds))
+  const handleSearchChange = (value) => {
+    setKeyword(value)
 
-    _vendorIds.splice(idx, 1)
+    if (window.__searchTimeout) {
+      clearTimeout(window.__searchTimeout)
+    }
 
-    setVendorIds(_vendorIds)
+    window.__searchTimeout = setTimeout(() => {
+      onChange({ ...filter, keyword: value })
+    }, 600)
   }
-
-  useEffect(() => {
-    const newValue = vendorIds.join(',')
-    onChange({ ...filter, vendorId: newValue })
-  }, [vendorIds])
 
   return (
     <Stack vertical>
       <Stack.Item fill>
         {/* search */}
-        <Search
-          options={items.map((item) => ({
-            value: '' + item.id,
-            label: item.name,
-          }))}
-          value={vendorIds}
-          onChange={(value) => setVendorIds(value)}
+        <TextField
+          value={keyword}
+          placeholder="Search By vendor..."
+          onChange={(value) => handleSearchChange(value)}
+          clearButton
+          onClearButtonClick={() => setKeyword('') & onChange({ ...filter, keyword: '' })}
         />
-      </Stack.Item>
-
-      <Stack.Item>
-        <Stack>
-          {vendorIds?.map((x, idx) => (
-            <Stack.Item key={idx}>
-              <Tag onRemove={() => handleRemoveTag(idx)}>
-                Vendor: {items.find((it) => String(it.id) === x)?.name}
-              </Tag>
-            </Stack.Item>
-          ))}
-        </Stack>
       </Stack.Item>
 
       {/* ... filters */}

@@ -78,6 +78,14 @@ function VendorsPage(props) {
       }
     }
 
+    if ('keyword' in filter) {
+      if (filter.keyword) {
+        params = { ...params, keyword: filter.keyword }
+      } else {
+        delete params.keyword
+      }
+    }
+
     setSearchParams(params)
   }
 
@@ -166,11 +174,7 @@ function VendorsPage(props) {
 
       <Card>
         <Card.Section>
-          <Filter
-            filter={qs.parse(location.search)}
-            {...vendorList}
-            onChange={(filter) => handleFilter(filter)}
-          />
+          <Filter filter={qs.parse(location.search)} onChange={(filter) => handleFilter(filter)} />
         </Card.Section>
 
         <Card.Section>
