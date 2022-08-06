@@ -62,7 +62,7 @@ function Filters(props) {
   }
 
   const handlePriceRangeChange = (value) => {
-    onChange({ ...filter, price: value })
+    onChange({ ...filter, price: value.toString() })
     setPriceActive(false)
   }
 
@@ -156,7 +156,14 @@ function Filters(props) {
 
         {Boolean(filter.price) && (
           <Tag onRemove={() => onChange({ ...filter, price: '' })}>
-            price: from {filter.price[0] + 'đ'} to {filter.price[1] + 'đ'}
+            price: from{' '}
+            {new Intl.NumberFormat('en-EN', { maximumSignificantDigits: 3 }).format(
+              filter.price.split(',')[0],
+            )}{' '}
+            to{' '}
+            {new Intl.NumberFormat('en-EN', { maximumSignificantDigits: 3 }).format(
+              filter.price.split(',')[1],
+            )}
           </Tag>
         )}
       </Stack>

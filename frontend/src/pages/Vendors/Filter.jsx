@@ -2,7 +2,7 @@ import { Stack, TextField } from '@shopify/polaris'
 import React, { useState } from 'react'
 
 function Filter({ onChange = null, filter = {} }) {
-  const [keyword, setKeyword] = useState('')
+  const [keyword, setKeyword] = useState(filter.keyword || '')
 
   const handleSearchChange = (value) => {
     setKeyword(value)
