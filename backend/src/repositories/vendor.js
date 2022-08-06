@@ -1,6 +1,5 @@
 import Model from '../models/vendor.js'
 import { Op } from 'sequelize'
-import qs from 'query-string'
 
 const find = async ({ page, limit, keyword }) => {
   try {

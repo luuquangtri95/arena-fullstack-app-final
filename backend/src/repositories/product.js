@@ -16,8 +16,7 @@ const find = async ({ page, limit, keyword, vendorId, status, publish, price }) 
   try {
     let _page = page ? (parseInt(page) >= 1 ? parseInt(page) : 1) : 1
     let _limit = limit ? (parseInt(limit) >= 1 ? parseInt(limit) : 20) : 20
-
-    console.log(price)
+    let _price = price ? price.split(',').map((x) => Number(x)) : ''
 
     let where = {}
     if (keyword) {
@@ -59,8 +58,8 @@ const find = async ({ page, limit, keyword, vendorId, status, publish, price }) 
       where = {
         ...where,
         price: {
-          [Op.gte]: price[0],
-          [Op.lte]: price[1],
+          [Op.gte]: _price[0],
+          [Op.lte]: _price[1],
         },
       }
     }
