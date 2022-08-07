@@ -69,6 +69,11 @@ function Filters(props) {
   }
 
   const handleVendorOptionChange = (value) => {
+    // if value is empty auto close form multi search
+    if (value.length === 0) {
+      setVendorActive(false)
+    }
+
     setVendorValue(value)
 
     onChange?.({ ...filter, vendorId: value.toString() })
@@ -89,18 +94,6 @@ function Filters(props) {
 
         <Stack.Item>
           <ButtonGroup segmented>
-            {/* <Popover
-              active={vendorActive}
-              activator={
-                <Button disclosure onClick={() => setVendorActive(!vendorActive)}>
-                  Vendor
-                </Button>
-              }
-              onClose={() => setVendorActive(false)}
-            >
-              <ActionList actionRole="menuitem" items={vendorActionList} />
-            </Popover> */}
-
             <div>
               <Button id="button-price-range" onClick={() => setVendorActive(!vendorActive)}>
                 Vendor

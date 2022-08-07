@@ -49,6 +49,8 @@ export default function FilterVendorSuggest({ optionList, onChange, value }) {
       value={inputValue}
       placeholder="Vendor Search: Iphone, Samsung..."
       verticalContent={verticalContentMarkup}
+      clearButton
+      onClearButtonClick={() => setInputValue('')}
     />
   )
 
