@@ -13,6 +13,7 @@ function ConfirmDelete(props) {
           content: 'Discard',
           onAction: onDiscard,
         },
+
         {
           content: 'Delete now',
           onAction: onSubmit,
