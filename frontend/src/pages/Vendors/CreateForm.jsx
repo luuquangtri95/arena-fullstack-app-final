@@ -78,7 +78,7 @@ function CreateForm(props) {
 
   return (
     <Stack vertical alignment="fill">
-      <AppHeader title={created.id ? 'Edit country' : 'Add country'} onBack={onDiscard} />
+      <AppHeader title={created.id ? 'Edit vendor' : 'Add vendor'} onBack={onDiscard} />
 
       <Card sectioned>
         <Stack vertical alignment="fill">

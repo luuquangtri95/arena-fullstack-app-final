@@ -7,9 +7,9 @@ const min = 0
 const max = 1000000
 const step = 100
 
-export default function FilterByPriceRange({ onChange = null }) {
+export default function FilterByPriceRange({ onChange = null, filter = [] }) {
   const [intermediateTextFieldValue, setIntermediateTextFieldValue] = useState(initialValue)
-  const [rangeValue, setRangeValue] = useState(initialValue)
+  const [rangeValue, setRangeValue] = useState(filter)
 
   const handleRangeSliderChange = (value) => {
     setRangeValue(value)

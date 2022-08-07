@@ -98,6 +98,7 @@ function ProductsPage(props) {
 
     if ('vendorId' in filter) {
       if (filter.vendorId) {
+        console.log('filter by index', filter)
         params = { ...params, vendorId: filter.vendorId }
       } else {
         delete params.vendorId

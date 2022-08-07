@@ -1,12 +1,14 @@
 import { ActionList, Button, ButtonGroup, Popover, Stack, Tag, TextField } from '@shopify/polaris'
 import { CaretDownMinor } from '@shopify/polaris-icons'
 import React, { useState } from 'react'
-import FilterByPriceRange from './filters/FilterByPriceRange'
+import FilterByPriceRange from './FilterByPriceRange'
+import FilterVendorSuggest from './FilterByVendorSuggest'
 import './styles.scss'
 
 function Filters(props) {
   const { filter = {}, onChange = null, vendorList = [] } = props
   const [search, setSearch] = useState(filter.keyword || '')
+  const [vendorValue, setVendorValue] = useState([])
   const [vendorActive, setVendorActive] = useState(false)
   const [statusActive, setStatusActive] = useState(false)
   const [publishActive, setPublishActive] = useState(false)
@@ -66,6 +68,12 @@ function Filters(props) {
     setPriceActive(false)
   }
 
+  const handleVendorOptionChange = (value) => {
+    setVendorValue(value)
+
+    onChange?.({ ...filter, vendorId: value.toString() })
+  }
+
   return (
     <Stack vertical alignment="fill">
       <Stack>
@@ -81,7 +89,7 @@ function Filters(props) {
 
         <Stack.Item>
           <ButtonGroup segmented>
-            <Popover
+            {/* <Popover
               active={vendorActive}
               activator={
                 <Button disclosure onClick={() => setVendorActive(!vendorActive)}>
@@ -91,7 +99,16 @@ function Filters(props) {
               onClose={() => setVendorActive(false)}
             >
               <ActionList actionRole="menuitem" items={vendorActionList} />
-            </Popover>
+            </Popover> */}
+
+            <div>
+              <Button id="button-price-range" onClick={() => setVendorActive(!vendorActive)}>
+                Vendor
+                <div className="icon-arrow-down">
+                  <CaretDownMinor />
+                </div>
+              </Button>
+            </div>
 
             <Popover
               active={statusActive}
@@ -131,17 +148,27 @@ function Filters(props) {
 
       {priceActive && (
         <div style={{ width: 400 }}>
-          <FilterByPriceRange onChange={handlePriceRangeChange} />
+          <FilterByPriceRange
+            onChange={handlePriceRangeChange}
+            filter={filter.price ? filter.price.split(',') : [50000, 200000]}
+          />
         </div>
       )}
 
-      <Stack>
-        {Boolean(filter.vendorId) && (
-          <Tag onRemove={() => onChange({ ...filter, vendorId: '' })}>
-            Vendor: {vendorActionList.find((item) => item.value === filter.vendorId)?.content}
-          </Tag>
-        )}
+      {vendorActive && (
+        <Stack.Item>
+          <FilterVendorSuggest
+            onChange={(value) => handleVendorOptionChange(value)}
+            optionList={vendorList.map((vendor) => ({
+              value: String(vendor.id),
+              label: String(vendor.name),
+            }))}
+            value={vendorValue}
+          />
+        </Stack.Item>
+      )}
 
+      <Stack>
         {Boolean(filter.status) && (
           <Tag onRemove={() => onChange({ ...filter, status: '' })}>
             Status: {statusActionList.find((item) => item.value === filter.status)?.content}

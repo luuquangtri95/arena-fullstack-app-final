@@ -162,10 +162,10 @@ function VendorsPage(props) {
   return (
     <Stack vertical alignment="fill">
       <AppHeader
-        title="Countries"
+        title="Vendors"
         actions={[
           {
-            label: 'Add country',
+            label: 'Add vendor',
             primary: true,
             onClick: () => setCreated({}),
           },
